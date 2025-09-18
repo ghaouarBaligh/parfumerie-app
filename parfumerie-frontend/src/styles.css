@@ -1,0 +1,55 @@
+/* Couleurs principales */
+:root {
+  --primary-color: #f8c8dc;   /* rose pastel */
+  --secondary-color: #5a2a4a; /* violet profond pour textes et boutons */
+  --accent-color: #ff69b4;    /* rose vif pour hover et accents */
+  --background-color: #fff0f5; /* fond général très clair */
+  --card-background: #ffffff;  /* fond des cartes */
+  --text-color: #4b1e3a;       /* couleur principale du texte */
+}
+
+/* Appliquer les couleurs globales */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--primary-color);
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: var(--secondary-color);
+}
+
+.navbar .nav-link:hover {
+  color: var(--accent-color);
+}
+
+/* Boutons */
+.btn-primary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Cartes */
+.card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Titres */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--secondary-color);
+}

@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <h2>Liste des Fournisseurs</h2>
+
+  <div class="mb-3">
+    <button class="btn btn-success" (click)="toggleForm(true)">+ Ajouter Fournisseur</button>
+  </div>
+
+  <!-- Formulaire dynamique -->
+  <div *ngIf="showForm" class="card p-3 mb-3 shadow-sm">
+    <div class="mb-2">
+      <input class="form-control" placeholder="Nom" [(ngModel)]="fournisseurForm.nom">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Email" [(ngModel)]="fournisseurForm.email">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Telephone" [(ngModel)]="fournisseurForm.telephone">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Adresse" [(ngModel)]="fournisseurForm.adresse">
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" (click)="saveFournisseur()">Enregistrer</button>
+      <button class="btn btn-secondary" (click)="toggleForm()">Annuler</button>
+    </div>
+  </div>
+
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Telephone</th>
+        <th>Adresse</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fournisseur of fournisseurs">
+        <td>{{ fournisseur.id }}</td>
+        <td>{{ fournisseur.nom }}</td>
+        <td>{{ fournisseur.email }}</td>
+        <td>{{ fournisseur.telephone }}</td>
+        <td>{{ fournisseur.adresse }}</td>
+        <td>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" (click)="editFournisseur(fournisseur)">Modifier</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteFournisseur(fournisseur)">Supprimer</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

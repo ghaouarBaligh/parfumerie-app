@@ -1,0 +1,12 @@
+.bg-pink {
+  background-color: #f8c8dc; /* rose pastel */
+}
+
+.navbar-light .navbar-brand,
+.navbar-light .nav-link {
+  color: #5a2a4a; /* couleur texte */
+}
+
+.navbar-light .nav-link:hover {
+  color: #ff69b4;
+}

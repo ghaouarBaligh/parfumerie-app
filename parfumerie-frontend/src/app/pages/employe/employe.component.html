@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <h2>Liste des Employé(e)s</h2>
+
+  <div class="mb-3">
+    <button class="btn btn-success" (click)="toggleForm(true)">+ Ajouter Employé(e)</button>
+  </div>
+
+  <!-- Formulaire dynamique -->
+  <div *ngIf="showForm" class="card p-3 mb-3 shadow-sm">
+    <div class="mb-2">
+      <input class="form-control" placeholder="Nom" [(ngModel)]="employeForm.nom">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Prenom" [(ngModel)]="employeForm.prenom">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Email" [(ngModel)]="employeForm.email">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Telephone" [(ngModel)]="employeForm.telephone">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Role" [(ngModel)]="employeForm.role">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Username" [(ngModel)]="employeForm.username">
+    </div>
+    <div class="mb-2">
+      <input class="form-control" placeholder="Password" [(ngModel)]="employeForm.password">
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" (click)="saveEmploye()">Enregistrer</button>
+      <button class="btn btn-secondary" (click)="toggleForm()">Annuler</button>
+    </div>
+  </div>
+
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Email</th>
+        <th>Telephone</th>
+        <th>Role</th>
+        <th>Username</th>
+        <th>Password</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employe of employes">
+        <td>{{ employe.id }}</td>
+        <td>{{ employe.nom }}</td>
+        <td>{{ employe.prenom }}</td>
+        <td>{{ employe.email }}</td>
+        <td>{{ employe.telephone }}</td>
+        <td>{{ employe.role }}</td>
+        <td>{{ employe.username }}</td>
+        <td>{{ employe.password }}</td>
+        <td>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" (click)="editEmploye(employe)">Modifier</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteEmploye(employe)">Supprimer</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
