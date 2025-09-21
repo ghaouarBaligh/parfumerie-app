@@ -4,6 +4,8 @@ import { FournisseurService } from '../../services/fournisseur.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ChartData, ChartOptions } from 'chart.js';
+import { NgChartsModule } from 'ng2-charts';
 
 @Component({
   selector: 'app-fournisseur',
@@ -11,12 +13,24 @@ import { RouterModule } from '@angular/router';
   imports: [
     FormsModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    NgChartsModule
   ],
   templateUrl: './fournisseur.component.html',
   styleUrl: './fournisseur.component.css'
 })
 export class FournisseurComponent implements OnInit {
+
+
+  fournisseursVilleChartData: ChartData<'bar'> = { labels: [], datasets: [] };
+  fournisseursVilleChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { title: { display: true, text: 'Ville' } },
+      y: { title: { display: true, text: 'Nombre de fournisseurs' }, beginAtZero: true }
+    }
+  };
 
   fournisseurs : FournisseurDTO[] = [];
   showForm : boolean = false;
@@ -26,6 +40,7 @@ export class FournisseurComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFournisseurs();
+    this.loadFournisseursChart();
   }
 
   getFournisseurs(){
@@ -72,5 +87,33 @@ export class FournisseurComponent implements OnInit {
         this.fournisseurForm = { ...fournisseur };
         this.showForm = true;
   }
+
+  loadFournisseursChart() {
+    this.fournisseurService.consulter().subscribe(data => {
+      this.fournisseurs = data;
+
+      // Extraire les villes depuis l'adresse
+      const cityCount: { [key: string]: number } = {};
+      this.fournisseurs.forEach(f => {
+        // ici je suppose que la ville est le dernier mot dans l'adresse
+        const parts = f.adresse.split(',');
+        const ville = parts[parts.length - 1].trim();
+        cityCount[ville] = (cityCount[ville] || 0) + 1;
+      });
+
+      // Préparer les données du graphe
+      this.fournisseursVilleChartData = {
+        labels: Object.keys(cityCount),
+        datasets: [{
+          data: Object.values(cityCount),
+          label: 'Nombre de fournisseurs',
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'blue',
+          borderWidth: 1
+        }]
+      };
+    });
+  }
+
 
 }

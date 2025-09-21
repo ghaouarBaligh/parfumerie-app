@@ -3,19 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Angular Material Modules
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { ProduitService } from '../../services/produit.service';
 import { FournisseurService } from '../../services/fournisseur.service';
 import { EmployeService } from '../../services/employe.service';
-import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
-import { NgChartsModule } from 'ng2-charts';
 import { CommonModule } from '@angular/common';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,17 +17,27 @@ import { CommonModule } from '@angular/common';
   imports: [
     RouterModule,
     CommonModule,
-    NgChartsModule
+    NgChartsModule,
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
-
 
   totalProduits: number = 0;
   totalFournisseurs: number = 0;
   totalEmployes: number = 0;
+
+  // Graphique produits par fournisseur - Updated configuration
+  public fournisseurChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: [{ data: [], label: 'Nombre de produits' }]
+  };
+  
+  public fournisseurChartType: ChartType = 'bar';
+  public fournisseurChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+  };
 
   constructor(
     private produitService: ProduitService,
@@ -43,6 +47,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStats();
+    this.loadFournisseurChart();
   }
 
   loadStats() {
@@ -51,6 +56,21 @@ export class DashboardComponent implements OnInit {
     this.employeService.consulter().subscribe(data => this.totalEmployes = data.length);
   }
 
-
+  loadFournisseurChart() {
+    this.fournisseurService.consulter().subscribe(fournisseurs => {
+      this.produitService.getAll().subscribe(produits => {
+        // Update chart data with proper structure
+        this.fournisseurChartData = {
+          labels: fournisseurs.map(f => f.nom),
+          datasets: [{
+            data: fournisseurs.map(f =>
+              produits.filter(p => p.fournisseurId === f.id).length
+            ),
+            label: 'Nombre de produits'
+          }]
+        };
+      });
+    });
+  }
 
 }

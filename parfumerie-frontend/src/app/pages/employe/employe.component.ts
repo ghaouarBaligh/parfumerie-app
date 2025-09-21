@@ -4,6 +4,8 @@ import { EmployeService } from '../../services/employe.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { NgChartsModule } from 'ng2-charts';
 
 @Component({
   selector: 'app-employe',
@@ -11,12 +13,38 @@ import { RouterModule } from '@angular/router';
   imports: [
     FormsModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    NgChartsModule,
   ],
   templateUrl: './employe.component.html',
   styleUrl: './employe.component.css'
 })
 export class EmployeComponent {
+
+  // Graphique produits par fournisseur - Updated configuration
+    public roleChartData: ChartData<'pie'> = {
+      labels: [], //rôles
+      datasets: [{ data: [] }] // nbre d'employé(e)s
+    };
+    
+    public roleChartType: ChartType = 'pie';
+    public roleChartOptions: ChartConfiguration['options'] = {
+      responsive: true,
+    };
+
+    loadRolesChart(){
+      this.employeService.consulter().subscribe(employes => {
+        const roles = ['Manager', 'CEO', 'Vendeur']
+        const data = roles.map(role => employes.filter(e => e.role === role).length);
+
+        this.roleChartData = {
+          labels: roles,
+          datasets: [{ data: data, label: 'Nombre d\'employés par rôle' }]
+        }
+      })
+    }
+
+
 
   employes : EmployeDTO[] = [];
   showForm: boolean = false;
@@ -26,6 +54,7 @@ export class EmployeComponent {
   
   ngOnInit(): void {
       this.getEmployes();
+      this.loadRolesChart();
     }
   
   getEmployes(){
@@ -71,6 +100,7 @@ export class EmployeComponent {
   editEmploye(employe: EmployeDTO) {
       this.employeForm = { ...employe };
       this.showForm = true;
-    }
+  }
+
 
 }

@@ -52,3 +52,12 @@
     </tbody>
   </table>
 </div>
+
+<div style="width: 800px; margin: auto; margin-top: 40px;">
+    <h3 class="text-center mb-2">Répartition des fournisseurs par ville</h3>
+    <canvas baseChart
+            [data]="fournisseursVilleChartData"
+            [options]="fournisseursVilleChartOptions"
+            [type]="'bar'">
+    </canvas>
+  </div>

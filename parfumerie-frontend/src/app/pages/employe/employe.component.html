@@ -20,14 +20,21 @@
       <input class="form-control" placeholder="Telephone" [(ngModel)]="employeForm.telephone">
     </div>
     <div class="mb-2">
-      <input class="form-control" placeholder="Role" [(ngModel)]="employeForm.role">
+      <select class="form-control" [(ngModel)]="employeForm.role">
+        <option value="" disabled selected>Choisir un rôle</option>
+        <option value="CEO">CEO</option>
+        <option value="Manager">Manager</option>
+        <option value="Vendeur">Vendeur</option>
+      </select>
     </div>
+<!--
     <div class="mb-2">
       <input class="form-control" placeholder="Username" [(ngModel)]="employeForm.username">
     </div>
     <div class="mb-2">
       <input class="form-control" placeholder="Password" [(ngModel)]="employeForm.password">
     </div>
+  -->
     <div class="d-flex gap-2">
       <button class="btn btn-primary" (click)="saveEmploye()">Enregistrer</button>
       <button class="btn btn-secondary" (click)="toggleForm()">Annuler</button>
@@ -43,8 +50,10 @@
         <th>Email</th>
         <th>Telephone</th>
         <th>Role</th>
+<!--       
         <th>Username</th>
         <th>Password</th>
+-->
       </tr>
     </thead>
     <tbody>
@@ -55,8 +64,10 @@
         <td>{{ employe.email }}</td>
         <td>{{ employe.telephone }}</td>
         <td>{{ employe.role }}</td>
+<!--
         <td>{{ employe.username }}</td>
         <td>{{ employe.password }}</td>
+-->
         <td>
           <div class="d-flex gap-2">
             <button class="btn btn-primary btn-sm" (click)="editEmploye(employe)">Modifier</button>
@@ -66,4 +77,13 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<div style="width: 600px; margin: auto; margin-top: 50px;">
+  <h3 class="text-center mb-2">Nombre d'employés par rôle</h3>
+  <canvas baseChart
+          [data]="roleChartData"
+          [type]="roleChartType"
+          [options]="roleChartOptions">
+  </canvas>
 </div>
